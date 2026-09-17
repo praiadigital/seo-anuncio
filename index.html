@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEO de Anúncio — seu anúncio no topo das buscas</title>
+<meta name="description" content="Analisador de SEO para anúncios imobiliários: nota, palavras-chave do litoral e sugestões automáticas. Satélite da rede praia.digital">
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#fefce8;color:#422006;min-height:100vh}
+header{padding:24px;text-align:center;background:linear-gradient(120deg,#a16207,#eab308);color:#fff}
+nav a{color:#fef9c3;margin:0 8px;text-decoration:none;font-size:14px;font-weight:600}
+.wrap{max-width:720px;margin:auto;padding:24px}
+.panel{background:#fff;border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 6px 18px rgba(161,98,7,.12)}
+label{display:block;margin:10px 0 4px;font-weight:600}
+input,textarea{width:100%;padding:12px;border-radius:10px;border:2px solid #fde68a;font-size:15px;font-family:inherit}
+.nota{text-align:center;padding:20px}
+.nota b{font-size:60px}
+.barra{background:#fef9c3;border-radius:99px;height:14px;overflow:hidden;margin:10px 0}
+.barra div{height:100%;background:linear-gradient(90deg,#eab308,#22c55e);transition:width .4s}
+.sug{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed #fde68a;font-size:14px}
+footer{padding:20px;text-align:center;font-size:13px}
+footer a{color:#a16207}
+</style></head>
+<body>
+<header><h1>🔎 SEO de Anúncio</h1><p>Descubra a nota do seu anúncio e como melhorá-la</p>
+<nav><a href="https://praia.digital">Praia Digital</a><a href="https://praia.digital/gerador-descricoes">Gerador de Descrições</a><a href="https://praia.digital/blog-litoral">Blog do Litoral</a><a href="https://praia.digital/apps">Todos os apps</a></nav></header>
+<div class="wrap">
+<div class="panel">
+<label>Título do anúncio</label><input id="tit" placeholder="Apê 2 quartos frente mar no Gonzaga, Santos" oninput="calc()">
+<label>Descrição</label><textarea id="desc" rows="5" placeholder="Descreva o imóvel..." oninput="calc()"></textarea>
+</div>
+<div class="panel nota"><b id="nota">—</b><div class="barra"><div id="bar"></div></div><p id="resumo">Cole seu anúncio acima para receber a nota de 0 a 100.</p></div>
+<div class="panel"><h2>💡 Sugestões</h2><div id="sugs"></div></div>
+</div>
+<footer>Rede <a href="https://praia.digital">praia.digital</a> · <a href="https://praia.digital/tradutor-anuncio">Tradutor de Anúncios</a> · <a href="https://praia.digital/tour-360">Tour 360</a> · <a href="https://praia.digital/radar-precos">Radar de Preços</a></footer>
+<script>
+const KW=['praia','litoral','vista mar','frente mar','pé na areia','santos','guarujá','temporada','varanda','mobiliado','piscina','condomínio','vaga','sacada','oportunidade'];
+function calc(){
+const t=tit.value.toLowerCase(),d=desc.value.toLowerCase(),all=t+' '+d;
+let pts=0,sugs=[];
+if(t.length>=30&&t.length<=65)pts+=20;else sugs.push(`📏 Título com 30-65 caracteres (atual: ${t.length}) — ideal para Google e portais`);
+const kws=KW.filter(k=>all.includes(k));
+pts+=Math.min(30,kws.length*5);
+if(kws.length<4)sugs.push('🔑 Inclua palavras-chave do litoral: '+KW.filter(k=>!all.includes(k)).slice(0,4).join(', '));
+if(d.length>=200)pts+=15;else sugs.push('📝 Descrição com 200+ caracteres (atual: '+d.length+')');
+if(/\d+\s?m²|m2/.test(all))pts+=10;else sugs.push('📐 Informe a área em m²');
+if(/r\$/.test(all))pts+=10;else sugs.push('💰 Informe o preço ou diária');
+if(/quadro|quarto|dorm|suíte|suite/.test(all))pts+=8;else sugs.push('🛏️ Cite quartos e suítes');
+if(/wifi|wi-fi|garagem|elevador|churrasqueira/.test(all))pts+=7;else sugs.push('✨ Liste diferenciais: Wi-Fi, garagem, churrasqueira...');
+pts=Math.min(100,pts);
+nota.textContent=pts;bar.style.width=pts+'%';
+resumo.textContent=pts>=80?'🔥 Anúncio excelente! Quer versão em outro idioma? Veja o Tradutor de Anúncios.':pts>=50?'👍 Bom, mas dá para melhorar com as dicas abaixo.':'⚠️ Anúncio fraco — siga as sugestões abaixo.';
+sugsDiv=document.getElementById('sugs');sugsDiv.innerHTML=sugs.length?sugs.map(s=>`<div class="sug">${s}</div>`).join(''):'<div class="sug">✅ Tudo certo! Gere variações no <a href="https://praia.digital/gerador-descricoes">Gerador de Descrições IA</a>.</div>';}
+calc();
+</script></body></html>
